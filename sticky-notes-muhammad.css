@@ -1,0 +1,236 @@
+/* ================================================
+   Sticky Notes Group-4
+     ================================================ */
+
+/* ── Variables ─────────────────────────────────── */
+:root {
+  --color-bg: #ededed;
+  --color-title: #1a1a1a;
+  --color-placeholder: #9ca3af;
+  --color-delete-bg: #ef5350;
+  --color-delete-hover: #c62828;
+  --color-add-bg: #ffffff;
+  --color-add-icon: #5b8dee;
+
+  /* Note background colors — matching the image */
+  --note-color-1: #f5f0f0; /* off-white / cream */
+  --note-color-2: #e8d5f5; /* light lavender */
+  --note-color-3: #c9b8e8; /* medium purple */
+  --note-color-4: #cdd0da; /* grey-blue */
+
+  --radius-card: 1rem;
+  --shadow-card: 0 4px 16px rgba(0, 0, 0, 0.08);
+  --font-main: "Nunito", sans-serif;
+}
+
+/* ── Reset ─────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-main);
+  background-color: var(--color-bg);
+  min-height: 100vh;
+  padding: 2rem 1rem 3rem;
+}
+
+/* ── Header ────────────────────────────────────── */
+.app-header {
+  text-align: center;
+  margin-bottom: 1.75rem;
+}
+
+.app-title {
+  font-size: clamp(1.75rem, 6vw, 2.5rem);
+  font-weight: 800;
+  color: var(--color-title);
+  letter-spacing: -0.5px;
+}
+
+/* ── Notes grid ────────────────────────────────── */
+.notes-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  max-width: 48rem;
+  margin: 0 auto;
+}
+
+/* ── Note card ─────────────────────────────────── */
+.note-card {
+  position: relative;
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  min-height: 12rem;
+  padding: 1rem;
+  border: none;
+  cursor: text;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.note-card:hover {
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.13);
+  transform: translateY(-2px);
+}
+
+/* ── Note textarea ─────────────────────────────── */
+.note-card__textarea {
+  width: 100%;
+  height: 100%;
+  min-height: 10rem;
+  background: transparent;
+  border: none;
+  outline: none;
+  resize: none;
+  font-family: var(--font-main);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #4a4a6a;
+  line-height: 1.6;
+  cursor: text;
+}
+
+.note-card__textarea::placeholder {
+  color: var(--color-placeholder);
+  font-weight: 600;
+}
+
+/* ── Delete button ─────────────────────────────── */
+.note-card__delete {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  width: 1.875rem;
+  height: 1.875rem;
+  border-radius: 0.375rem;
+  background-color: var(--color-delete-bg);
+  color: #ffffff;
+  border: none;
+  font-size: 0.875rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* Hidden by default, shown on card hover */
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease, background-color 0.2s ease,
+    transform 0.15s ease;
+}
+
+/* Show delete button when hovering the card */
+.note-card:hover .note-card__delete {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.note-card__delete:hover {
+  background-color: var(--color-delete-hover);
+  transform: scale(1.08);
+}
+
+.note-card__delete:active {
+  transform: scale(0.95);
+}
+
+/* ── Add note button card ──────────────────────── */
+.note-card--add {
+  background-color: var(--color-add-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  min-height: 6rem;
+}
+
+.note-card--add:hover {
+  background-color: #f9f9f9;
+}
+
+.note-card__plus {
+  font-size: 2.5rem;
+  font-weight: 300;
+  color: var(--color-add-icon);
+  line-height: 1;
+  pointer-events: none;
+  transition: transform 0.2s ease;
+}
+
+.note-card--add:hover .note-card__plus {
+  transform: scale(1.15) rotate(90deg);
+}
+
+/* ── Note enter animation ──────────────────────── */
+@keyframes noteIn {
+  from {
+    opacity: 0;
+    transform: scale(0.92) translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.note-card--animate {
+  animation: noteIn 0.25s ease forwards;
+}
+
+/* ── Note delete animation ─────────────────────── */
+@keyframes noteOut {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.88);
+  }
+}
+
+.note-card--removing {
+  animation: noteOut 0.2s ease forwards;
+  pointer-events: none;
+}
+
+/* ── Responsive — 480px+ ───────────────────────── */
+@media (min-width: 30rem) {
+  .notes-grid {
+    gap: 1.25rem;
+  }
+
+  .note-card {
+    min-height: 14rem;
+  }
+
+  .note-card__textarea {
+    min-height: 11rem;
+  }
+}
+
+/* ── Responsive — 768px+ ───────────────────────── */
+@media (min-width: 48rem) {
+  body {
+    padding: 2.5rem 2rem 4rem;
+  }
+
+  .notes-grid {
+    gap: 1.5rem;
+  }
+
+  .note-card {
+    min-height: 16rem;
+  }
+
+  .note-card__textarea {
+    min-height: 13rem;
+    font-size: 1rem;
+  }
+}
