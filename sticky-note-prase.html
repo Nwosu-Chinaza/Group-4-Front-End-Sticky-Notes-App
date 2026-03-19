@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sticky Notes App</title>
+
+<style>
+* { 
+  margin:0; padding:0; 
+  box-sizing:border-box; 
+  font-family:'Segoe UI', sans-serif; 
+}
+
+body {
+  background: linear-gradient(135deg, #2563eb, #1e3a8a);
+  min-height:100vh;
+  padding:20px;
+}
+
+.container { max-width:1200px; margin:auto; }
+
+.header { text-align:center; color:white; margin-bottom:30px; }
+.header h1 { font-size:2.5rem; }
+
+.add-note { display:flex; gap:10px; margin-bottom:20px; }
+
+.add-note textarea {
+  flex:1; padding:15px; border-radius:10px; border:none;
+  resize:none; height:60px;
+}
+
+.add-note button {
+  padding:0 20px; border:none; border-radius:10px;
+  background:white; color:#2563eb; cursor:pointer;
+  font-weight:600;
+}
+
+.notes {
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(260px,1fr));
+  gap:20px;
+}
+
+.note {
+  background:white;
+  border-radius:15px;
+  padding:15px;
+  box-shadow:0 10px 20px rgba(0,0,0,0.2);
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+
+  /* animation */
+  opacity:0;
+  transform:translateY(20px);
+  animation:fadeIn 0.4s ease forwards;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+.note-text {
+  font-size:1rem;
+  color:#1e3a8a;
+  white-space:pre-wrap;
+}
+
+textarea.edit-area {
+  width:100%;
+  border:1px solid #ddd;
+  border-radius:8px;
+  padding:10px;
+  resize:none;
+}
+
+.actions {
+  display:flex;
+  justify-content:space-between;
+}
+
+.btn {
+  border:none;
+  padding:6px 10px;
+  border-radius:8px;
+  cursor:pointer;
+  font-size:0.8rem;
+}
+
+.edit { background:#2563eb; color:white; box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;}
+.save { background:#16a34a; color:white; }
+.delete { background:crimson; color:white; box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;}
+
+.timestamp {
+  font-size:0.7rem;
+  opacity:0.6;
+}
+
+@media(max-width:600px) {
+  .header h1 { font-size:1.8rem; }
+  .add-note { flex-direction:column; }
+  .add-note button { width:100%; height:45px; }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <h1>📝 Sticky Notes</h1>
+    <p>built by praise with love</p>
+  </div>
+
+  <div class="add-note">
+    <textarea id="noteInput" placeholder="Write a note..."></textarea>
+    <button onclick="addNote()">Add</button>
+  </div>
+
+  <div class="notes" id="notesContainer"></div>
+</div>
+
+<script>
+const notesContainer = document.getElementById('notesContainer');
+const noteInput = document.getElementById('noteInput');
+
+let notesData = []; //this is an empty container at the start its empty but ass we keep on adding notes it grows.
+
+window.onload = () => {
+  notesData = JSON.parse(localStorage.getItem('notes')) || [];
+  renderNotes();
+};
+
+function saveNotes() {
+  localStorage.setItem('notes', JSON.stringify(notesData));
+}
+
+function formatTime(date) {
+  return new Date(date).toLocaleString();
+}
+
+function addNote() {
+  const text = noteInput.value.trim();
+  if (!text) return;
+
+  notesData.push({
+    text,
+    updated: Date.now(),
+    editing:false
+  });
+
+  noteInput.value = '';
+  saveNotes();
+  renderNotes();
+}
+
+function deleteNote(index) {
+  notesData.splice(index,1);
+  saveNotes();
+  renderNotes();
+}
+
+function editNote(index) {
+  notesData[index].editing = true;
+  renderNotes();
+}
+
+function saveEdit(index, value) {
+  notesData[index].text = value;
+  notesData[index].updated = Date.now();
+  notesData[index].editing = false;
+  saveNotes();
+  renderNotes();
+}
+
+function renderNotes() {
+  notesContainer.innerHTML = '';
+
+  notesData.forEach((note, index) => {
+    const noteDiv = document.createElement('div');
+    noteDiv.className = 'note';
+
+    if (note.editing) {
+      const textarea = document.createElement('textarea');
+      textarea.className = 'edit-area';
+      textarea.value = note.text;
+
+      const saveBtn = document.createElement('button');
+      saveBtn.className = 'btn save';
+      saveBtn.innerText = 'Save';
+      saveBtn.onclick = () => saveEdit(index, textarea.value);
+
+      noteDiv.appendChild(textarea);
+      noteDiv.appendChild(saveBtn);
+
+    } else {
+      const text = document.createElement('div');
+      text.className = 'note-text';
+      text.innerText = note.text;
+
+      const actions = document.createElement('div');
+      actions.className = 'actions';
+
+      const editBtn = document.createElement('button');
+      editBtn.className = 'btn edit';
+      editBtn.innerText = 'Edit';
+      editBtn.onclick = () => editNote(index);
+
+      const deleteBtn = document.createElement('button');
+      deleteBtn.className = 'btn delete';
+      deleteBtn.innerText = 'Delete';
+      deleteBtn.onclick = () => deleteNote(index);
+
+      const timestamp = document.createElement('div');
+      timestamp.className = 'timestamp';
+      timestamp.innerText = `Updated: ${formatTime(note.updated)}`;
+
+      actions.appendChild(editBtn);
+      actions.appendChild(deleteBtn);
+
+      noteDiv.appendChild(text);
+      noteDiv.appendChild(actions);
+      noteDiv.appendChild(timestamp);
+    }
+
+    notesContainer.appendChild(noteDiv);
+  });
+}
+</script>
+
+</body>
+</html>
