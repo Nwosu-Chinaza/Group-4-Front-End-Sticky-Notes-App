@@ -83,3 +83,38 @@ h1 {
 .delete-btn:hover {
     opacity: 1;
 }
+
+/* The Add Button */
+#add-btn {
+    position: fixed;
+    bottom: 30px;
+    width: 60px;
+    height: 60px;
+    font-size: 35px;
+    background: #4a90e2;
+    border: none; 
+    border-radius: 50%;  /* Circular button for mobile feel */
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(74, 144, 226, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    text-decoration: none;
+}
+
+/* Styling the Font Awesome Icon specifically */
+#add-btn i {
+    color: #ffffff;
+    font-size: 28px; /* Adjust this to make the plus bigger or smaller */
+}
+
+#add-btn:hover {
+    
+    transform: scale(1.1) rotate(90deg); /* Cool effect: rotates the plus when hovering */
+}
+
+#add-btn:active {
+    transform: scale(0.9);
+}
