@@ -118,3 +118,19 @@ h1 {
 #add-btn:active {
     transform: scale(0.9);
 }
+
+/* Mobile Adjustments */
+@media (max-width: 600px) {
+    #notes-container {
+        grid-template-columns: 1fr; /* One note per row on small phones */
+    }
+    
+    h1 {
+        font-size: 1.5rem;
+    }
+
+    .note {
+        aspect-ratio: auto;
+        min-height: 200px;
+    }
+}
