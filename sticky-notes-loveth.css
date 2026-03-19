@@ -1,0 +1,136 @@
+/* General Reset */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #f4f4f9;
+    font-family: 'Poppins', 'Inter', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    min-height: 100vh;
+}
+
+h1 {
+    color: #333;
+    margin-bottom: 30px;
+    font-size: 2rem;
+}
+
+/* The Grid Container */
+#notes-container {
+    display: grid;
+    /* This creates as many columns as fit, at least 250px wide */
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    width: 100%;
+    max-width: 1200px;
+}
+
+/* Individual Note */
+.note {
+    aspect-ratio: 1 / 1; /* Keeps it square */
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s;
+}
+
+.note:hover {
+    transform: translateY(-5px);
+}
+
+/* Note Text Area */
+.note textarea {
+    background: transparent;
+    border: none;
+    resize: none;
+    height: 100%;
+    width: 100%;
+    font-size: 1.1rem;
+    color: #444;
+    outline: none;
+    line-height: 1.5;
+}
+
+/* Delete Button */
+.delete-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #ff6b6b;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    width: 28px;
+    height: 28px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+}
+
+.delete-btn:hover {
+    opacity: 1;
+}
+
+/* The Add Button */
+#add-btn {
+    position: fixed;
+    bottom: 30px;
+    width: 60px;
+    height: 60px;
+    font-size: 35px;
+    background: #4a90e2;
+    border: none; 
+    border-radius: 50%;  /* Circular button for mobile feel */
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(74, 144, 226, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    text-decoration: none;
+}
+
+/* Styling the Font Awesome Icon specifically */
+#add-btn i {
+    color: #ffffff;
+    font-size: 28px; /* Adjust this to make the plus bigger or smaller */
+}
+
+#add-btn:hover {
+    
+    transform: scale(1.1) rotate(90deg); /* Cool effect: rotates the plus when hovering */
+}
+
+#add-btn:active {
+    transform: scale(0.9);
+}
+
+/* Mobile Adjustments */
+@media (max-width: 600px) {
+    #notes-container {
+        grid-template-columns: 1fr; /* One note per row on small phones */
+    }
+    
+    h1 {
+        font-size: 1.5rem;
+    }
+
+    .note {
+        aspect-ratio: auto;
+        min-height: 200px;
+    }
+}
