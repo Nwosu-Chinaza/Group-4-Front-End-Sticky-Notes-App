@@ -20,3 +20,42 @@ h1 {
     margin-bottom: 30px;
     font-size: 2rem;
 }
+
+/* The Grid Container */
+#notes-container {
+    display: grid;
+    /* This creates as many columns as fit, at least 250px wide */
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    width: 100%;
+    max-width: 1200px;
+}
+
+/* Individual Note */
+.note {
+    aspect-ratio: 1 / 1; /* Keeps it square */
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s;
+}
+
+.note:hover {
+    transform: translateY(-5px);
+}
+
+/* Note Text Area */
+.note textarea {
+    background: transparent;
+    border: none;
+    resize: none;
+    height: 100%;
+    width: 100%;
+    font-size: 1.1rem;
+    color: #444;
+    outline: none;
+    line-height: 1.5;
+}
