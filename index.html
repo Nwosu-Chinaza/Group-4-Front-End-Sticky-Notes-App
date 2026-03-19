@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sticky Notes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600&display=swap"
+      rel="stylesheet" />
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="app">
+      <div class="top-bar">
+        <div class="title-group">
+          <i class="bx bxs-note"></i>
+          <h1>Sticky Notes</h1>
+        </div>
+        <div class="theme-toggle" id="toggleTheme">
+          <i class="bx bx-sun"></i>
+          <i class="bx bx-moon"></i>
+        </div>
+      </div>
+
+      <div class="notes-grid" id="notesGrid">
+        <div class="add-card" id="addNote">+</div>
+      </div>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>
